@@ -13,10 +13,10 @@ const server = app.listen(process.env.PORT || 8000, () => {
 })
 
 app.get('/app.js', (req, res) => {
-  browserify(path.join(__dirname, 'client.js'), { debug: true })
-    .transform(babelify)
-    .bundle()
-    .pipe(res)
+  fs.readFile(path.join(__dirname, './app.js'), (err, data) => {
+    if (err) res.status(500).send('Internal server error')
+    else res.type('js').send(data.toString())
+  })
 })
 
 app.get('/graphiql.css', (req, res) => {
